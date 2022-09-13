@@ -1,23 +1,35 @@
 # Maintenance Tracker
 
-Maintenance Tracker is a more advanced to-do application that tracks the status of various items in a MySQL database. Values tracked include an item's category, title, status, estimated repair cost, maintainer's note, and past updates.
+Maintenance Tracker is an advanced to-do application that tracks the status of various items in a MySQL database. Values tracked include an item's category, title, status, repair cost, maintainer's note, and past updates.
 
-The database structure includes the following tables:
+The database structure is as follows:
 
-* Category
-    - `id` (Primary Key)
-    - `title`
+```mermaid
+classDiagram
+    direction RL
+    class Category {
+      id: INT [PK]
+      title: VARCHAR [30]
+      removed: TINYINT
+    }
 
-* Item
-    - `id` (Primary Key)
-    - `title`
-    - `category_id` (Foreign Key, references `Category`)
+    class Entry {
+      id: INT [PK]
+      item_id: INT
+      cost: INT
+      note: TEXT
+      status: TINYINT
+      visible: TINYINT
+      removed: TINYINT
+      date: DATETIME
+    }
 
-* Entry
-    - `id` (Primary Key)
-    - `item_id` (Foreign Key, references `Item`)
-    - `cost`
-    - `note`
-    - `status`
-    - `visible`
-    - `date`
+    class Item {
+      id: INT [PK]
+      title: VARCHAR [30]
+      category_id: INT
+    }
+
+    Item "*" --> "1" Category : category_id
+    Entry "*" --> "1" Item : item_id
+```
