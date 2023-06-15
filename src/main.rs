@@ -16,6 +16,7 @@ mod data;
 mod db;
 
 use crate::core::{functions, structs::*};
+use crate::serde_json::json;
 use data::*;
 use db::database;
 
@@ -180,6 +181,15 @@ async fn main() -> Result<()> {
             }
 
             Ok("OK".to_owned())
+        });
+
+    // items json
+    app.at("/items")
+        .get(|mut req: tide::Request<State>| async move {
+            let mut c = database::connect(&req.state().db_credentials).unwrap();
+            let items = database::collect_items(&mut c);
+
+            Ok(json!(items))
         });
 
     // ajax history
