@@ -27,3 +27,9 @@ jobs:
         with:
           command: build
           args: --release
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: maintenance_tracker
+          path: target/release/maintenance_tracker
